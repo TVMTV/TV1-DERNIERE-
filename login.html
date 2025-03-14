@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV1 DERNIÈRE - Modes</title>
+    <style>
+        body {
+            background: linear-gradient(to right, blue, red);
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .modes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .mode {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 15px;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            color: white;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .mode:hover {
+            background-color: #333; /* Effet au survol */
+        }
+        .mode .plus {
+            font-size: 80px;
+            font-weight: bold;
+        }
+        .add-mode {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .add-mode button {
+            padding: 10px 20px;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestion des Modes - TV1 DERNIÈRE</h1>
+    <div class="add-mode">
+        <button onclick="createMode()">Créer un mode</button>
+    </div>
+    <div class="modes-container" id="modes-container">
+        <!-- Modes créés apparaîtront ici -->
+    </div>
+
+    <script>
+        // Clé unique basée sur l'email
+        let email = localStorage.getItem('email') || prompt("Veuillez entrer votre email :");
+        localStorage.setItem('email', email); // Enregistre l'email pour éviter de redemander
+        let userKey = 'modes_' + email;
+
+        const modesContainer = document.getElementById('modes-container');
+        const colors = ["white", "green", "yellow"]; // Couleurs des "+"
+
+        // Charger les modes depuis le Local Storage
+        function loadModes() {
+            const savedModes = JSON.parse(localStorage.getItem(userKey)) || [];
+            savedModes.forEach(displayMode); // Affiche chaque mode sauvegardé
+        }
+
+        // Créer un nouveau mode
+        function createMode() {
+            const modeName = prompt('Nom du mode :');
+            if (modeName) {
+                const modeData = {
+                    name: modeName,
+                    color: colors[modesContainer.childElementCount % colors.length],
+                };
+
+                // Sauvegarde des modes dans Local Storage pour cet utilisateur
+                const savedModes = JSON.parse(localStorage.getItem(userKey)) || [];
+                savedModes.push(modeData);
+                localStorage.setItem(userKey, JSON.stringify(savedModes));
+
+                // Affiche le mode nouvellement créé
+                displayMode(modeData);
+            }
+        }
+
+        // Afficher un mode sur la page
+        function displayMode(modeData) {
+            const mode = document.createElement('a');
+            mode.className = 'mode';
+            mode.href = 'index.html'; // Lien vers "index.html"
+            mode.target = '_self';
+            mode.innerHTML = `
+                <div class="plus" style="color: ${modeData.color};">+</div>
+                <p>${modeData.name}</p>
+            `;
+            modesContainer.appendChild(mode);
+        }
+
+        // Charger les modes au démarrage
+        loadModes();
+    </script>
+</body>
+</html>

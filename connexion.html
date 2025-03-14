@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV1 DERNIÈRE +</title>
+    <style>
+        body {
+            background: linear-gradient(to right, blue, red);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .form-container {
+            background-color: #002244;
+            padding: 20px;
+            border-radius: 15px;
+            width: 300px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .form-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        input {
+            background-color: #f4f4f4;
+            color: #000;
+        }
+        button {
+            background-color: #f04e30;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c03b23;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Bienvenue sur TV1 DERNIÈRE +</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Entrez votre email" required>
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+
+    <script>
+        // Ajout de l'écouteur d'événement
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            // Récupère l'email entré par l'utilisateur
+            const email = document.getElementById('email').value;
+
+            // Enregistre l'email dans le local storage
+            localStorage.setItem('email', email);
+
+            // Affiche un message de confirmation (optionnel)
+            alert('Email enregistré avec succès : ' + email);
+
+            // Redirige vers une autre page (login.html par exemple)
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
