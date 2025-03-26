@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV1 DERNIÈRE - Modes</title>
+    <style>
+        /* Fond animé */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(-45deg, blue, red, purple, orange);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s infinite ease-in-out;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Conteneur des modes */
+        .modes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Capsule animée */
+        .mode {
+            background-color: #222;
+            border-radius: 15px;
+            padding: 20px;
+            width: 200px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.6);
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            animation: modeAppearance 0.8s ease-out;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        @keyframes modeAppearance {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .mode:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Gros "+" dans la capsule */
+        .mode .plus {
+            font-size: 60px;
+            font-weight: bold;
+            color: yellow;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Nom des modes */
+        .mode p {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+        }
+
+        /* Boutons Modifier et Supprimer */
+        .mode button {
+            margin: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .edit-button {
+            background-color: #00cc66;
+            color: white;
+        }
+        .edit-button:hover {
+            background-color: #00994d;
+        }
+        .delete-button {
+            background-color: #e63946;
+            color: white;
+        }
+        .delete-button:hover {
+            background-color: #b22222;
+        }
+
+        /* Bouton Ajouter un mode */
+        .add-mode {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .add-mode button {
+            padding: 12px 25px;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            animation: buttonPulse 2s infinite ease-in-out alternate;
+        }
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 5px rgba(0, 120, 215, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 120, 215, 1); }
+            100% { box-shadow: 0 0 5px rgba(0, 120, 215, 0.5); }
+        }
+        .add-mode button:hover {
+            transform: rotate(3deg) scale(1.1);
+            background-color: #005bb5;
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; animation: fadeInTitle 2s ease-in-out;">Qui est là ?</h1>
+    <div class="add-mode">
+        <button onclick="createMode()">Créer un mode</button>
+    </div>
+    <div class="modes-container" id="modes-container"></div>
+
+    <script>
+        // Variables globales
+        const modesContainer = document.getElementById('modes-container');
+        const colors = [
+            "linear-gradient(45deg, #00008B, #1E90FF)",
+            "linear-gradient(45deg, #87CEEB, #B0E0E6)",
+            "linear-gradient(45deg, #FF0000, #FF4500)",
+            "blue", "violet", "pink", "orange", "yellow"
+        ];
+
+        let email = localStorage.getItem('email') || prompt("Veuillez entrer votre email :");
+        while (!validateEmail(email)) {
+            email = prompt("Email invalide. Veuillez entrer un email valide :");
+        }
+        localStorage.setItem('email', email);
+        const userKey = 'modes_' + email;
+
+        // Valider l'email
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Charger les modes
+        function loadModes() {
+            const savedModes = JSON.parse(localStorage.getItem(userKey)) || [];
+            savedModes.forEach((mode, index) => displayMode(mode, index));
+        }
+
+        // Créer un mode
+        function createMode() {
+            const modeName = prompt('Nom du mode :');
+            const modeColor = getRandomColor();
+            if (modeName) {
+                const modeData = { name: modeName, color: modeColor };
+                const savedModes = JSON.parse(localStorage.getItem(userKey)) || [];
+                savedModes.push(modeData);
+                localStorage.setItem(userKey, JSON.stringify(savedModes));
+                displayMode(modeData, savedModes.length - 1);
+            }
+        }
+
+        // Modifier un mode
+        function editMode(index) {
+            const savedModes = JSON.parse(localStorage.getItem(userKey)) || [];
+            const newName = prompt('Nouveau nom pour ce mode :', savedModes[index].name);
+            if (newName) {
+                savedModes[index].name = newName;
+                localStorage.setItem(userKey, JSON.stringify(savedModes));
+                renderModes();
+            }
+        }
+
+        // Supprimer un mode
+        function deleteMode(index) {
+            const savedModes = JSON.parse(localStorage.getItem(userKey)) || [];
+            if (confirm('Voulez-vous vraiment supprimer ce mode ?')) {
+                savedModes.splice(index, 1);
+                localStorage.setItem(userKey, JSON.stringify(savedModes));
+                renderModes();
+            }
+        }
+
+        // Afficher un mode
+        function displayMode(modeData, index) {
+            const mode = document.createElement('div');
+            mode.className = 'mode';
+            mode.style.background = modeData.color;
+            mode.innerHTML = `
+                <div class="plus">+</div>
+                <p>${modeData.name}</p>
+                <button class="edit-button" onclick="editMode(${index})">Modifier</button>
+                <button class="delete-button" onclick="deleteMode(${index})">Supprimer</button>
+            `;
+            // Redirection vers votre lien spécifique
+            mode.addEventListener("click", () => {
+                window.location.href = "https://sites.google.com/view/tv1-acces/tv1";
+            });
+            modesContainer.appendChild(mode);
+        }
+
+        // Réafficher tous les modes
+        function renderModes() {
+            modesContainer.innerHTML = '';
+            loadModes();
+        }
+
+        // Générer une couleur aléatoire
+        function getRandomColor() {
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Charger les modes existants
+        loadModes();
+    </script>
+</body>
+</html>
