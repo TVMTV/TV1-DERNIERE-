@@ -1,0 +1,263 @@
+<html lang="fr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV1 DERNIÈRE +</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gill+Sans+Ultra+Bold&display=swap');
+
+        /* Style de l'introduction */
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(90deg, #0044CC, #FF0000);
+            animation: backgroundMove 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundMove {
+            0% {
+                background: linear-gradient(90deg, #0044CC, #FF0000);
+            }
+            50% {
+                background: linear-gradient(90deg, #003399, #FF3333);
+            }
+            100% {
+                background: linear-gradient(90deg, #0044CC, #FF0000);
+            }
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .headline {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-family: 'Gill Sans Ultra Bold', Arial, sans-serif;
+            color: white;
+            animation: slideIn 3s ease-in-out forwards;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .bg-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #002F6C, #0058B0);
+            animation: pulse 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Style du formulaire */
+        .form-container {
+            background-color: #002244;
+            padding: 20px;
+            border-radius: 15px;
+            width: 300px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: auto;
+            display: none;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input {
+            background-color: #f4f4f4;
+            color: #000;
+        }
+
+        button {
+            background-color: #f04e30;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c03b23;
+        }
+
+        a {
+            color: #f04e30;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style de conclusion */
+        .container-end {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            background: linear-gradient(90deg, #0044CC, #FF0000);
+            animation: backgroundMoveEnd 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundMoveEnd {
+            0% {
+                background: linear-gradient(90deg, #0044CC, #FF0000);
+            }
+            50% {
+                background: linear-gradient(90deg, #003399, #FF3333);
+            }
+            100% {
+                background: linear-gradient(90deg, #0044CC, #FF0000);
+            }
+        }
+
+        .headline-end {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-family: 'Gill Sans Ultra Bold', Arial, sans-serif;
+            color: white;
+            animation: slideOut 2s ease-out forwards;
+        }
+
+        @keyframes slideOut {
+            0% {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, 100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Introduction -->
+    <div class="container" id="intro" style="display: none;">
+        <div class="bg-circle" style="top: 20%; left: 10%;"></div>
+        <div class="bg-circle" style="top: 70%; left: 80%;"></div>
+        <div class="headline">
+            <span>TV1 DERNIÈRE +</span>
+        </div>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="form-container" id="form" style="display: block;">
+        <h1>Bienvenue sur TV1 DERNIÈRE +</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Entrez votre email" required="">
+            <input type="password" id="password" placeholder="Entrez votre mot de passe" required="">
+            <button type="submit">S'enregistrer</button>
+        </form>
+        <div id="userDataLink" style="display: none; margin-top: 20px;">
+            <p>
+                <a id="userLink" href="#">Accédez à vos données utilisateur</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="container-end" id="outro">
+        <div class="headline-end">
+            <span>Bienvenu sur TV1 DERNIÈRE + !!!</span>
+        </div>
+    </div>
+
+    <script>
+        // Transition de l'introduction vers le formulaire
+        setTimeout(() => {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('form').style.display = 'block';
+        }, 5000);
+
+        // Gestion de la soumission du formulaire
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {
+                // Nettoyer les anciennes données liées à l'email précédent
+                const previousEmail = localStorage.getItem('email');
+                if (previousEmail && previousEmail !== email) {
+                    localStorage.removeItem('users_' + previousEmail);
+                }
+
+                // Enregistrer les nouvelles données utilisateur
+                localStorage.setItem('email', email);
+                const userKey = 'users_' + email;
+
+                let users = JSON.parse(localStorage.getItem(userKey)) || {};
+                users[email] = password;
+                localStorage.setItem(userKey, JSON.stringify(users));
+
+                // Création d'un lien hypertexte personnalisé
+                const userLink = document.getElementById('userLink');
+                userLink.href = `https://www.votre-site-d-utilisateur.com/profil?email=${encodeURIComponent(email)}`;
+                userLink.textContent = `Accédez à vos données utilisateur (${email})`;
+
+                // Afficher le lien
+                document.getElementById('userDataLink').style.display = 'block';
+
+                alert('Compte créé avec succès ! Accédez à vos données via le lien ci-dessous.');
+
+                // Transition vers la conclusion
+                document.getElementById('form').style.display = 'none';
+                document.getElementById('outro').style.display = 'block';
+
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+    </script>
+
+
+</body></html>
